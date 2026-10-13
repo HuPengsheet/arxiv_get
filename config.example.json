@@ -1,0 +1,16 @@
+{
+  "keywords_file": "keywords.csv",
+  "categories": [],
+  "database": "data/papers.sqlite3",
+  "output": "output/index.html",
+  "page_size": 100,
+  "ai": {
+    "mode": "chat",
+    "base_url": "https://api.openai.com/v1",
+    "model": "current-chat",
+    "api_key_env": "ARXIV_AI_API_KEY",
+    "threshold": 70,
+    "timeout": 90,
+    "response_format": "json_object"
+  }
+}

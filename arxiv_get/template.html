@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>arXiv 论文研究台</title><style>
+:root{font-family:system-ui,-apple-system,"Segoe UI",sans-serif;color:#172b32;background:#f3f6f5}*{box-sizing:border-box}body{margin:0}main{max-width:1180px;margin:auto;padding:48px 24px}.eyebrow{letter-spacing:3px;font-size:12px;color:#487e73}h1{font-size:36px;margin:12px 0}header p{color:#5d6f73}.stats{display:flex;gap:16px;flex-wrap:wrap;margin:28px 0}.stat{background:white;border:1px solid #dfe6e4;border-radius:12px;padding:18px 24px;min-width:150px}.stat b{font-size:28px;display:block}.stat span{font-size:13px;color:#67777b}.filters{background:#e5eeeb;padding:20px;border:1px solid #d8e4df;border-radius:12px;margin-bottom:24px}.filter-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:16px}.filter-heading h2{margin:0;font-size:18px}.filter-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.field{display:flex;flex-direction:column;gap:7px;font-size:13px;color:#45655d}.field input,.field select{width:100%;min-width:0}.wide{grid-column:span 2}input,select{font:inherit;color:#172b32;border:1px solid #c9d6d1;border-radius:8px;padding:10px;background:white}input:focus-visible,select:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid #226659;outline-offset:2px}.category-panel{border-top:1px solid #cadbd3;margin-top:18px;padding-top:16px}.category-panel summary{font-weight:600}.category-panel p{margin:10px 0}.category-options{display:flex;flex-wrap:wrap;gap:8px;max-height:220px;overflow:auto;margin-top:12px;padding:3px}.category-choice{display:inline-flex;align-items:center;gap:6px;background:white;border:1px solid #c9d6d1;border-radius:8px;padding:8px 10px;font-size:13px;cursor:pointer}.category-choice:has(input:checked){background:#d4e9df;border-color:#226659}.category-choice input{accent-color:#226659;margin:0}.filter-note{font-size:12px;color:#67777b;margin:16px 0 0}.error{color:#a03632;font-size:14px}.paper{background:white;border:1px solid #dfe6e4;border-radius:12px;padding:24px;margin:16px 0}.top{display:flex;justify-content:space-between;gap:16px}.paper h2{font-size:20px;margin:0 0 12px;line-height:1.5}.paper a{color:#226659;text-decoration:none}.meta{font-size:13px;color:#69777d;line-height:1.8}.score{white-space:nowrap;color:#226659;font-weight:650}.reason{padding:14px;background:#edf5f1;border-radius:8px;font-size:14px;line-height:1.8;margin:16px 0}.tag{display:inline-block;font-size:12px;padding:3px 9px;background:#eff3f2;border-radius:5px;margin:4px 6px 4px 0}button.tag{color:#226659;cursor:pointer}.tag.primary{background:#dcece4}summary{cursor:pointer;color:#45655d;font-size:14px}details p{line-height:1.8;color:#3f5159}.links{margin-top:16px;font-size:14px}.links a{margin-right:20px}#empty{text-align:center;padding:48px;color:#69777d}.muted{font-size:13px;color:#67777b}button{font:inherit;border:0;padding:10px 14px;border-radius:8px;background:#226659;color:white;cursor:pointer}button.secondary{background:white;border:1px solid #bdd1c7;color:#226659}footer{margin-top:30px}[hidden]{display:none!important}@media(max-width:800px){.filter-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:500px){main{padding:24px 16px}h1{font-size:28px}.paper{padding:18px}.top{display:block}.score{display:block;margin-bottom:12px}.filter-grid{grid-template-columns:1fr}.wide{grid-column:span 1}.stat{min-width:0;flex:1;padding:14px}.filters{padding:16px}}
+</style></head><body><main>
+<header><div class="eyebrow">RESEARCH / DAILY ARXIV</div><h1>每天的论文，与你的研究连接</h1><p>研究主题：__KEYWORDS__</p><p class="muted">首次提交日期 · UTC ｜ AI 评分与中文理由 ｜ 数据保存在本地</p></header>
+<div class="stats"><div class="stat"><b id="total">0</b><span>已获取论文</span></div><div class="stat"><b id="selected">0</b><span>达到相关性阈值</span></div><div class="stat"><b id="pending">0</b><span>待 AI 筛选</span></div></div>
+<form id="filters" class="filters">
+<div class="filter-heading"><h2>筛选论文</h2><button id="resetFilters" type="button" class="secondary">重置筛选</button></div>
+<div class="filter-grid">
+<label class="field wide">全文搜索<input id="search" type="search" placeholder="标题、摘要、作者、分类、筛选理由或论文 ID"></label>
+<label class="field">作者<input id="author" type="search" placeholder="输入作者姓名"></label>
+<label class="field">学科大类<select id="subject"><option value="">全部学科</option></select></label>
+<label class="field">提交日期<select id="date"><option value="">全部日期</option></select></label>
+<label class="field">起始日期<input id="dateFrom" type="date"></label>
+<label class="field">结束日期<input id="dateTo" type="date"></label>
+<label class="field">分类匹配范围<select id="categoryScope"><option value="any">包括交叉分类</option><option value="primary">仅主分类</option></select></label>
+<label class="field">筛选状态<select id="status"><option value="selected">相关论文</option><option value="all">全部论文</option><option value="pending">待筛选</option><option value="rejected">低于阈值</option></select></label>
+<label class="field">相关性阈值<input id="threshold" type="number" min="0" max="100" step="1" value="__THRESHOLD__"></label>
+<label class="field">最低评分<input id="scoreMin" type="number" min="0" max="100" step="1" placeholder="不限"></label>
+<label class="field">最高评分<input id="scoreMax" type="number" min="0" max="100" step="1" placeholder="不限"></label>
+<label class="field">筛选依据<select id="basis"><option value="">全部依据</option><option value="abstract">完整摘要复核</option><option value="title">仅标题/分类初筛</option><option value="unspecified">未记录复核层级</option><option value="pending">尚未筛选</option></select></label>
+<label class="field">关联研究关键词<select id="keyword"><option value="">全部关键词</option></select></label>
+<label class="field wide">排序方式<select id="sort"><option value="scoreDesc">相关性评分：高 → 低</option><option value="scoreAsc">相关性评分：低 → 高</option><option value="dateDesc">提交时间：新 → 旧</option><option value="dateAsc">提交时间：旧 → 新</option><option value="title">标题：A → Z</option></select></label>
+</div>
+<details class="category-panel" id="categoryPanel"><summary>具体分类（可多选） · <span id="categorySummary">全部分类</span></summary>
+<p class="muted">多个具体分类取并集，再与其他条件组合。分类旁数字表示当前匹配范围下的全部库存数量；未记录主分类的历史论文按首个分类处理。</p>
+<label class="field">查找分类<input id="categorySearch" type="search" placeholder="例如 cs.AR、机器学习、计算机"></label>
+<div id="categories" class="category-options"></div><p id="categoryEmpty" class="muted" hidden>没有匹配的分类。</p>
+</details>
+<p class="filter-note">各筛选条件同时生效。评分区间仅匹配已评分论文；要浏览低分论文，请将状态切换为“全部论文”。点击论文分类标签可快速筛选。</p>
+<p id="filterError" class="error" role="alert" hidden></p>
+</form>
+<p id="count" class="muted" aria-live="polite"></p><div id="papers"></div><div id="empty" hidden>暂无符合条件的论文，试试切换“全部论文”或重置筛选。</div><button id="more" type="button" hidden>再显示 50 篇</button>
+<footer class="muted">筛选依据会区分标题/分类初筛与完整摘要复核；AI 判断供研究阅读参考。点击论文链接查看原文。</footer></main>
+<script id="data" type="application/json">__DATA__</script><script>
+const papers=JSON.parse(document.getElementById('data').textContent),el=id=>document.getElementById(id);
+let limit=50;const chosenCategories=new Set();
+const subjectNames={cs:'计算机科学',math:'数学',stat:'统计学',eess:'电气工程与系统科学','astro-ph':'天体物理','cond-mat':'凝聚态物理','physics':'物理学','quant-ph':'量子物理','hep-ph':'高能物理：现象学','hep-th':'高能物理：理论','hep-ex':'高能物理：实验','hep-lat':'高能物理：格点','gr-qc':'广义相对论与量子宇宙学','nucl-th':'核理论','nucl-ex':'核实验','q-bio':'定量生物学','q-fin':'定量金融',econ:'经济学',nlin:'非线性科学','math-ph':'数学物理'};
+const categoryNames={'cs.AR':'计算机体系结构','cs.DC':'分布式、并行与集群计算','cs.PF':'性能','cs.PL':'编程语言','cs.LG':'机器学习','cs.AI':'人工智能','cs.CL':'计算与语言','cs.CV':'计算机视觉与模式识别','cs.DS':'数据结构与算法','cs.SE':'软件工程','cs.CR':'密码学与安全','cs.RO':'机器人','cs.SD':'声音','cs.NI':'网络与互联网体系结构','cs.DB':'数据库','cs.IT':'信息论','cs.HC':'人机交互','cs.IR':'信息检索','cs.CY':'计算机与社会','cs.MA':'多智能体系统','cs.ET':'新兴技术','cs.NE':'神经与演化计算','math.NA':'数值分析','math.OC':'优化与控制','stat.ML':'机器学习','eess.SP':'信号处理','eess.SY':'系统与控制','eess.IV':'图像与视频处理','eess.AS':'音频与语音处理','physics.comp-ph':'计算物理'};
+function node(tag,text,cls){const n=document.createElement(tag);if(text!==undefined)n.textContent=text;if(cls)n.className=cls;return n}
+function subjectOf(category){return category.split('.')[0]}
+function primaryCategory(p){return p.primary_category||p.categories[0]}
+function scopedCategories(p){return el('categoryScope').value==='primary'?[primaryCategory(p)].filter(Boolean):p.categories}
+function basisOf(p){if(!p.screening)return 'pending';const reason=p.screening.reason||'';if(reason.startsWith('摘要复核：'))return 'abstract';if(reason.startsWith('标题/分类初筛'))return 'title';return 'unspecified'}
+function addOption(id,value,label){const o=node('option',label);o.value=value;el(id).append(o)}
+function refreshCategories(){
+const subject=el('subject').value,q=el('categorySearch').value.trim().toLowerCase(),counts=new Map();
+for(const p of papers){for(const c of new Set(scopedCategories(p))){if(!subject||subjectOf(c)===subject)counts.set(c,(counts.get(c)||0)+1)}}
+el('categories').replaceChildren();let visible=0;
+for(const [c,count] of [...counts].sort((a,b)=>a[0].localeCompare(b[0]))){const label=`${c}${categoryNames[c]?' · '+categoryNames[c]:''} (${count})`,text=[label,subjectNames[subjectOf(c)]||''].join(' ').toLowerCase();if(!text.includes(q))continue;visible++;
+const choice=node('label',undefined,'category-choice'),checkbox=node('input');checkbox.type='checkbox';checkbox.value=c;checkbox.checked=chosenCategories.has(c);checkbox.addEventListener('change',()=>{if(checkbox.checked)chosenCategories.add(c);else chosenCategories.delete(c);limit=50;draw()});choice.append(checkbox,node('span',label));el('categories').append(choice)}
+el('categoryEmpty').hidden=visible>0;el('categorySummary').textContent=chosenCategories.size?[...chosenCategories].sort().join('、'):'全部分类';
+}
+for(const d of [...new Set(papers.map(p=>p.published.slice(0,10)))].sort().reverse())addOption('date',d,d);
+const subjects=new Map();for(const p of papers){for(const s of new Set(p.categories.map(subjectOf)))subjects.set(s,(subjects.get(s)||0)+1)}
+for(const [s,count] of [...subjects].sort((a,b)=>a[0].localeCompare(b[0])))addOption('subject',s,`${subjectNames[s]||s} · ${s} (${count})`);
+for(const k of [...new Set(papers.flatMap(p=>p.screening?p.screening.matched_keywords:[]))].sort())addOption('keyword',k,k);
+function readFilters(){const from=el('dateFrom').value,to=el('dateTo').value,min=el('scoreMin').value,max=el('scoreMax').value;
+if(from&&to&&from>to)throw new Error('起始日期不能晚于结束日期。');
+for(const id of ['threshold','scoreMin','scoreMax']){const value=el(id).value;if(value!==''&&(!Number.isInteger(Number(value))||Number(value)<0||Number(value)>100))throw new Error('评分和阈值请输入 0–100 的整数。')}
+if(min!==''&&max!==''&&Number(min)>Number(max))throw new Error('最低评分不能高于最高评分。');
+return {q:el('search').value.trim().toLowerCase(),author:el('author').value.trim().toLowerCase(),subject:el('subject').value,date:el('date').value,from,to,status:el('status').value,threshold:Number(el('threshold').value)||0,min:min===''?null:Number(min),max:max===''?null:Number(max),basis:el('basis').value,keyword:el('keyword').value,sort:el('sort').value}}
+function matches(p,f){const s=p.screening,categories=scopedCategories(p),day=p.published.slice(0,10);
+if(f.date&&day!==f.date||f.from&&day<f.from||f.to&&day>f.to)return false;
+if(f.subject&&!categories.some(c=>subjectOf(c)===f.subject))return false;
+if(chosenCategories.size&&!categories.some(c=>chosenCategories.has(c)))return false;
+if(f.author&&!p.authors.some(a=>a.toLowerCase().includes(f.author)))return false;
+if(f.status==='pending'&&s||f.status==='selected'&&(!s||s.score<f.threshold)||f.status==='rejected'&&(!s||s.score>=f.threshold))return false;
+if((f.min!==null||f.max!==null)&&(!s||f.min!==null&&s.score<f.min||f.max!==null&&s.score>f.max))return false;
+if(f.basis&&basisOf(p)!==f.basis)return false;
+if(f.keyword&&(!s||!s.matched_keywords.includes(f.keyword)))return false;
+return [p.title,p.abstract,p.authors.join(' '),p.categories.join(' '),p.id,p.version_id,s?s.reason:'',s?s.matched_keywords.join(' '):''].join(' ').toLowerCase().includes(f.q)}
+function comparePapers(a,b,sort){const dateOrder=b.published.localeCompare(a.published)||a.id.localeCompare(b.id);
+if(sort==='dateDesc')return dateOrder;if(sort==='dateAsc')return -dateOrder;if(sort==='title')return a.title.localeCompare(b.title)||dateOrder;
+if(!a.screening||!b.screening)return Number(Boolean(b.screening))-Number(Boolean(a.screening))||dateOrder;
+return (sort==='scoreAsc'?a.screening.score-b.screening.score:b.screening.score-a.screening.score)||dateOrder}
+function draw(){refreshCategories();let f;try{f=readFilters()}catch(error){el('filterError').textContent=error.message;el('filterError').hidden=false;el('papers').replaceChildren();el('count').textContent='请调整筛选条件';el('empty').hidden=true;el('more').hidden=true;return}el('filterError').hidden=true;
+el('total').textContent=papers.length;el('selected').textContent=papers.filter(p=>p.screening&&p.screening.score>=f.threshold).length;el('pending').textContent=papers.filter(p=>!p.screening).length;
+const shown=papers.filter(p=>matches(p,f)).sort((a,b)=>comparePapers(a,b,f.sort));
+el('papers').replaceChildren();el('count').textContent=`找到 ${shown.length} / ${papers.length} 篇 · 已显示 ${Math.min(limit,shown.length)} 篇 · ${el('sort').selectedOptions[0].textContent}`;el('empty').hidden=shown.length>0;el('more').hidden=shown.length<=limit;
+for(const p of shown.slice(0,limit)){const card=node('article',undefined,'paper'),top=node('div',undefined,'top'),h=node('h2'),a=node('a',p.title);a.href=p.url;a.target='_blank';a.rel='noopener noreferrer';h.append(a);top.append(h,node('span',p.screening?`${p.screening.score} / 100`:'待筛选','score'));card.append(top,node('div',p.authors.join(', '),'meta'),node('div',`${p.published.slice(0,10)} · ${p.version_id}`,'meta'));const tags=node('div');p.categories.forEach(c=>{const isPrimary=c===primaryCategory(p),tag=node('button',`${c}${isPrimary?' · 主分类':''}`,'tag'+(isPrimary?' primary':''));tag.type='button';tag.title=categoryNames[c]||c;tag.addEventListener('click',()=>{chosenCategories.clear();chosenCategories.add(c);el('subject').value='';el('categoryScope').value='any';el('categorySearch').value='';el('categoryPanel').open=true;limit=50;draw()});tags.append(tag)});card.append(tags);if(p.screening){card.append(node('div',p.screening.reason,'reason'),node('div',`关联关键词：${p.screening.matched_keywords.join('、')||'无'} · 模型：${p.screening.model}`,'meta'))}const detail=node('details');detail.append(node('summary','展开摘要'),node('p',p.abstract));card.append(detail);const links=node('div',undefined,'links');for(const [label,url] of [['arXiv 原文',p.url],['PDF',p.pdf_url]]){const link=node('a',label);link.href=url;link.target='_blank';link.rel='noopener noreferrer';links.append(link)}card.append(links);el('papers').append(card)}}
+el('filters').addEventListener('submit',event=>event.preventDefault());
+for(const id of ['search','author','subject','date','dateFrom','dateTo','categoryScope','status','threshold','scoreMin','scoreMax','basis','keyword','sort'])el(id).addEventListener('input',()=>{if(id==='subject'){chosenCategories.clear();el('categorySearch').value=''}limit=50;draw()});
+el('categorySearch').addEventListener('input',refreshCategories);
+el('resetFilters').addEventListener('click',()=>{el('filters').reset();chosenCategories.clear();limit=50;draw()});
+el('more').addEventListener('click',()=>{limit+=50;draw()});draw();
+</script></body></html>
